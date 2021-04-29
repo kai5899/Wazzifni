@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818588625720",
+    "project_id": "wazzifni-20a8a",
+    "storage_bucket": "wazzifni-20a8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818588625720:android:c91f2af05333e9f2ee6fcd",
+        "android_client_info": {
+          "package_name": "com.mruniverse.locateme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818588625720-5760g0lhlf36a4rbsg19o6eusppvngll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGEIPK_HK0CKjzJSVU0VDILLg1E5vQGD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818588625720-5760g0lhlf36a4rbsg19o6eusppvngll.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
