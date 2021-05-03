@@ -71,7 +71,7 @@ class AppController extends GetxController with SingleGetTickerProviderMixin {
     } else {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: ThemeService().isDarkMode()
-              ? Color(0xFF050111)
+              ? Color(0xFF151515)
               : Colors.white, // Color for Android
 
           statusBarBrightness:

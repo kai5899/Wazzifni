@@ -21,6 +21,7 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     print("we are in OnInit");
+    getUserData();
     _firebaseUser.value = auth.currentUser;
     _firebaseUser.bindStream(auth.authStateChanges());
     getUserData();

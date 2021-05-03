@@ -14,8 +14,7 @@ class AddJobView extends StatelessWidget {
   AddJobView();
   final JobsController jobsController = Get.put(JobsController());
   final AuthController _authController = Get.put(AuthController());
-  final AppController regUserAppController =
-      Get.put(AppController());
+  final AppController regUserAppController = Get.put(AppController());
 
   @override
   Widget build(BuildContext context) {
@@ -87,15 +86,19 @@ class AddJobView extends StatelessWidget {
               },
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 32,
-                right: 32,
+              padding: EdgeInsets.only(
+                left: Get.width * 0.25,
+                right: Get.width * 0.25,
                 top: 10,
                 bottom: 10,
               ),
               child: DropdownButton<String>(
                 hint: Text(
                   "Select item",
+                  style: mainStyle(
+                      fontSize: 24,
+                      fontColor: context.theme.primaryColor,
+                      fontWeight: FontWeight.w500),
                 ),
                 value: jobsController.selectedType.value,
                 onChanged: (String value) {
@@ -110,7 +113,7 @@ class AddJobView extends StatelessWidget {
                           user,
                           style: mainStyle(
                               fontSize: 24,
-                              fontColor: mainColor,
+                              fontColor: context.theme.primaryColor,
                               fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -161,7 +164,7 @@ class AddJobView extends StatelessWidget {
                         Radius.circular(360),
                       ),
                     ),
-                    closedColor: context.theme.primaryColor,
+                    closedColor: mainColor,
                     closedBuilder:
                         (BuildContext context, VoidCallback openContainer) {
                       return SizedBox(
@@ -185,7 +188,10 @@ class AddJobView extends StatelessWidget {
                   ? Center(
                       child: Text(
                         "no requirements yet . Add some!",
-                        style: mainStyle(fontSize: 24),
+                        style: mainStyle(
+                          fontSize: 24,
+                          fontColor: context.theme.primaryColor,
+                        ),
                       ),
                     )
                   : ListView.builder(

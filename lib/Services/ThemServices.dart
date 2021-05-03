@@ -12,13 +12,13 @@ class ThemeService {
       primarySwatch: Colors.grey,
       primaryColor: Colors.white,
       brightness: Brightness.dark,
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: const Color(0xFF2b2e4a),
       accentColor: Colors.white,
       accentIconTheme: IconThemeData(color: Colors.black),
       dividerColor: Colors.black12,
-      scaffoldBackgroundColor: const Color(0xFF050111),
+      scaffoldBackgroundColor: const Color(0xFF151515),
       appBarTheme: AppBarTheme(
-        backgroundColor: const Color(0xFF050111),
+        backgroundColor: const Color(0xFF151515),
         titleTextStyle: mainStyle(fontColor: Colors.white, fontSize: 48),
       ));
 

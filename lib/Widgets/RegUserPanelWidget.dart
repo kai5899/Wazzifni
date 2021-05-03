@@ -28,7 +28,7 @@ class RegUserPanelWidget extends StatelessWidget {
         removeTop: true,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.theme.backgroundColor,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(48),
               topLeft: Radius.circular(48),
@@ -36,6 +36,7 @@ class RegUserPanelWidget extends StatelessWidget {
           ),
           child: controller.selectedProvider.value != null
               ? ListView(
+                  physics: BouncingScrollPhysics(),
                   children: [
                     SizedBox(
                       height: 12.0,
@@ -140,7 +141,8 @@ class RegUserPanelWidget extends StatelessWidget {
                                   child: Text(
                                     "Add Review",
                                     style: mainStyle(
-                                        fontColor: context.theme.accentColor),
+                                        fontColor:
+                                            context.theme.backgroundColor),
                                   ),
                                 ),
                               );
@@ -484,7 +486,11 @@ class AddReview extends StatelessWidget {
                 right: 32,
               ),
               child: Text("Write a Review",
-                  style: mainStyle(fontSize: 24), textAlign: TextAlign.start),
+                  style: mainStyle(
+                    fontSize: 24,
+                    fontColor: context.theme.primaryColor,
+                  ),
+                  textAlign: TextAlign.start),
             ),
             FieldEdited(
               label: "Review",

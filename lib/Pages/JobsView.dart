@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
+import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Controllers/AuthController.dart';
 import 'package:locateme/Controllers/JobsController.dart';
 import 'package:locateme/Widgets/Jobs/AddJobView.dart';
@@ -46,14 +47,13 @@ class JobsView extends StatelessWidget {
                               jobOffer: jobsController.offers[index],
                             );
                           },
-                          closedElevation: 2,
+                          closedElevation: 0,
                           closedShape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(0),
                             ),
                           ),
-                          // closedColor: context.theme.primaryColor,
-
+                          closedColor: context.theme.scaffoldBackgroundColor,
                           closedBuilder: (BuildContext context,
                               VoidCallback openContainer) {
                             return Padding(
@@ -102,7 +102,7 @@ class JobsView extends StatelessWidget {
                           Radius.circular(360),
                         ),
                       ),
-                      closedColor: context.theme.primaryColor,
+                      closedColor: mainColor,
                       closedBuilder:
                           (BuildContext context, VoidCallback openContainer) {
                         return SizedBox(

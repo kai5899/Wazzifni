@@ -38,7 +38,7 @@ class RegularUserHomeView extends StatelessWidget {
                             "Filter :",
                             style: mainStyle(
                                 fontSize: 24,
-                                fontColor: mainColor,
+                                fontColor: context.theme.primaryColor,
                                 fontWeight: FontWeight.w500),
                           ),
                         ],
@@ -49,6 +49,10 @@ class RegularUserHomeView extends StatelessWidget {
                       child: DropdownButton<String>(
                         hint: Text(
                           "Select item",
+                          style: mainStyle(
+                              fontSize: 24,
+                              fontColor: context.theme.primaryColor,
+                              fontWeight: FontWeight.w500),
                         ),
                         value: userController.userType.value,
                         onChanged: (String value) {
@@ -64,7 +68,7 @@ class RegularUserHomeView extends StatelessWidget {
                                   user,
                                   style: mainStyle(
                                       fontSize: 24,
-                                      fontColor: mainColor,
+                                      fontColor: context.theme.primaryColor,
                                       fontWeight: FontWeight.w500),
                                 ),
                               ],
@@ -101,10 +105,6 @@ class RegularUserHomeView extends StatelessWidget {
                       Container(
                         width: Get.width * 0.3,
                         child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  context.theme.primaryColor),
-                            ),
                             onPressed: () {
                               userController.resetFilter();
                             },
@@ -243,13 +243,13 @@ class RegularUserHomeView extends StatelessWidget {
             AnimatedPositioned(
               child: CircleAvatar(
                 radius: 30,
-                backgroundColor: mainColor,
+                backgroundColor: sColor3,
                 child: Center(
                   child: Text(
                     "${userController.markers.length}",
                     style: mainStyle(
-                      fontColor: sColor3,
-                      fontSize: 24,
+                      fontColor: mainColor,
+                      fontSize: 36,
                     ),
                   ),
                 ),
