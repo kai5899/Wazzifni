@@ -118,6 +118,28 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
               ),
+              authController.localUser["type"] == "Service Provider"
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text(
+                          "profession".tr,
+                          style:
+                              mainStyle(fontColor: context.theme.primaryColor),
+                        ),
+                        subtitle: Text(
+                          authController.localUser["profession"].toString(),
+                          style: mainStyle(
+                            fontSize: 36,
+                            fontColor: mainColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                    ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, top: 16),
                 child: ListTile(
