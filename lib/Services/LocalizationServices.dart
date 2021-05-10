@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:locateme/Langs.dart/ar_ar.dart';
-import 'package:locateme/Langs.dart/en_us.dart';
+import 'package:locateme/Langs/ar_ar.dart';
+import 'package:locateme/Langs/en_us.dart';
 
 class LocalizationService extends Translations {
   GetStorage storage = GetStorage();
