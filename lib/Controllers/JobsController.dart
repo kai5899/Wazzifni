@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -36,7 +36,6 @@ class JobsController extends GetxController {
   void onInit() {
     super.onInit();
     getOffers();
-    time.value = DateTime.now();
   }
 
   @override
@@ -83,6 +82,7 @@ class JobsController extends GetxController {
 
   getOffers() async {
     offers.clear();
+    time.value = DateTime.now();
     List<DocumentSnapshot> docs = await _service.getOffers();
     docs.forEach((element) {
       offers.add(JobOffer.fromMap(element.data()));

@@ -136,9 +136,9 @@ class FirstTimeController extends GetxController {
           uid: user.uid,
           photoUrl: photoUrl.value == null ? "none" : photoUrl.value,
           type: "Regular User");
-
+     
       _authController.firestoreService.createRegularUser(userz);
-      _authController.saveRegUserLocally(userz);
+ _authController.saveRegUserLocally(userz);
       _authController.localUser.value = userz.toJson();
     } else {
       ServiceProvider userz = ServiceProvider(

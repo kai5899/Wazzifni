@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Models/JobOffer.dart';
 import 'package:get/get.dart';
+import 'package:locateme/Services/FirestoreServices.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JobOfferViewModel extends StatelessWidget {
   final JobOffer jobOffer;
+  final bool byYou;
 
   final ScrollController sc = ScrollController();
 
-  JobOfferViewModel({this.jobOffer});
+  JobOfferViewModel({this.jobOffer, this.byYou});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,6 +195,72 @@ class JobOfferViewModel extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            byYou
+                ? Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Center(
+                      child: Text(
+                        "this offer was poster by you",
+                        style: mainStyle(),
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "contaict via Whatsapp",
+                          style: mainStyle(),
+                        ),
+                        Container(
+                          child: IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.whatsapp,
+                              size: 36,
+                              color: Color(0xff075e54),
+                            ),
+                            onPressed: () async {
+                              // String posterNumber  =
+                              Map<String, dynamic> user =
+                                  await FirestoreService()
+                                      .getUserById(jobOffer.posterId);
+                              var whatsappUrl =
+                                  "whatsapp://send?phone=${user["phoneNumber"]}";
+                              try {
+                                launch(whatsappUrl);
+                                // throw ("error");
+                              } catch (error) {
+                                Get.snackbar(
+                                  "Error Occured",
+                                  error.toString(),
+                                  snackPosition: SnackPosition.TOP,
+                                  duration: Duration(seconds: 3),
+                                  overlayColor: Colors.white.withOpacity(0.8),
+                                  overlayBlur: 1,
+                                  // borderRadius: 36,
+                                  forwardAnimationCurve: Curves.easeInOutBack,
+                                  reverseAnimationCurve: Curves.easeInCubic,
+                                  icon: Icon(
+                                    Icons.warning,
+                                    color: sColor3,
+                                  ),
+                                  shouldIconPulse: true,
+                                  snackStyle: SnackStyle.FLOATING,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            SizedBox(
+              height: 10,
             ),
           ],
         ),

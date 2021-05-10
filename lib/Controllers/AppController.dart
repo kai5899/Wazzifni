@@ -22,15 +22,18 @@ class AppController extends GetxController with SingleGetTickerProviderMixin {
   RxBool expanded = RxBool(true);
 
   Rx<Color> drawerColor = Rx<Color>(mainColor);
+
+  RxBool serviceEnabled = RxBool(false);
   @override
   void onInit() {
     super.onInit();
+     checkPermissions();
     controller = AnimationController(
         duration: Duration(milliseconds: 400),
         reverseDuration: Duration(milliseconds: 400),
         vsync: this);
 
-    checkPermissions();
+   
     getDrawerColor();
   }
 
@@ -85,8 +88,8 @@ class AppController extends GetxController with SingleGetTickerProviderMixin {
   checkPermissions() async {
     var status = await Permission.location.status;
 
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (serviceEnabled) {
+    serviceEnabled.value = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled.value) {
       if (!status.isGranted) {
         print("permission not granted");
         Permission.location.request();

@@ -232,11 +232,11 @@ class _AdvancedDrawerState extends State<AdvancedDrawer>
             // child: widget.child,
             child: ValueListenableBuilder<AdvancedDrawerValue>(
               valueListenable: _controller,
-              builder: (_, value, child) {
+              builder: (context, value, _) {
                 if (value.visible) {
                   return Stack(
                     children: [
-                      child,
+                      _,
                       if (value.visible)
                         Material(
                           color: Colors.transparent,
@@ -257,7 +257,7 @@ class _AdvancedDrawerState extends State<AdvancedDrawer>
                   );
                 }
 
-                return child;
+                return _;
               },
               child: widget.child,
             ),

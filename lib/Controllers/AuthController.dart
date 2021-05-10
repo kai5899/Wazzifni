@@ -21,7 +21,7 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     print("we are in OnInit");
-    getUserData();
+    // getUserData();
     _firebaseUser.value = auth.currentUser;
     _firebaseUser.bindStream(auth.authStateChanges());
     getUserData();
@@ -85,6 +85,7 @@ class AuthController extends GetxController {
   }
 
   Map<String, dynamic> readSavedUser() {
+    print("the user is " + storage.read("currentUser").toString());
     return storage.read("currentUser");
   }
 
@@ -104,6 +105,7 @@ class AuthController extends GetxController {
       localUser.value = {};
     } else if (data != null) {
       localUser.value = data;
+      storage.write("currentUser", data);
     }
     // print("the data is " + localUser.toString());
     // localUser.value = data;

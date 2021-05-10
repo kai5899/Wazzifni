@@ -1,5 +1,7 @@
 import 'package:animations/animations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
@@ -45,6 +47,8 @@ class JobsView extends StatelessWidget {
                           openBuilder: (BuildContext context, VoidCallback _) {
                             return JobOfferViewModel(
                               jobOffer: jobsController.offers[index],
+                              byYou: _authController.user.uid ==
+                                  jobsController.offers[index].posterId,
                             );
                           },
                           closedElevation: 0,
@@ -58,27 +62,55 @@ class JobsView extends StatelessWidget {
                               VoidCallback openContainer) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                title: Text(
-                                  jobsController
-                                      .offers[index].jobTitle.capitalizeFirst,
-                                  style: mainStyle(
-                                    fontSize: 24,
-                                    fontColor: context.theme.primaryColor,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  jobsController
-                                      .offers[index].location.capitalizeFirst,
-                                  style: mainStyle(
-                                    fontSize: 16,
-                                    fontColor: context.theme.primaryColor,
-                                  ),
-                                ),
-                                trailing: _authController.user.uid ==
+                              child: Slidable(
+                                actionPane: SlidableStrechActionPane(),
+                                secondaryActions: _authController.user.uid ==
                                         jobsController.offers[index].posterId
-                                    ? Text("by you")
+                                    ? [
+                                        IconSlideAction(
+                                          caption: 'Delete',
+                                          color: Colors.red,
+                                          icon: Icons.delete,
+                                          onTap: () {
+                                            FirebaseFirestore.instance
+                                                .collection("offers")
+                                                .doc(jobsController
+                                                    .offers[index].id
+                                                    .toString())
+                                                .delete()
+                                                .then((value) {
+                                              jobsController.offers
+                                                  .removeAt(index);
+                                            });
+                                          },
+                                        ),
+                                      ]
                                     : null,
+                                child: ListTile(
+                                  title: Text(
+                                    jobsController
+                                        .offers[index].jobTitle.capitalizeFirst,
+                                    style: mainStyle(
+                                      fontSize: 24,
+                                      fontColor: context.theme.primaryColor,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    jobsController
+                                        .offers[index].location.capitalizeFirst,
+                                    style: mainStyle(
+                                      fontSize: 16,
+                                      fontColor: context.theme.primaryColor,
+                                    ),
+                                  ),
+                                  trailing: _authController.user.uid ==
+                                          jobsController.offers[index].posterId
+                                      ? Text("by you")
+                                      : Container(
+                                          height: 0,
+                                          width: 0,
+                                        ),
+                                ),
                               ),
                             );
                           },
@@ -87,9 +119,33 @@ class JobsView extends StatelessWidget {
                     )
                   ],
                 ),
-          floatingActionButton:
-              _authController.localUser["type"] == "Regular User"
-                  ? OpenContainer(
+          floatingActionButton: _authController.localUser["type"] ==
+                  "Regular User"
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Material(
+                      elevation: 3,
+                      borderRadius: BorderRadius.circular(360),
+                      child: GestureDetector(
+                        onTap: () {
+                          jobsController.getOffers();
+                        },
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: sColor3,
+                          child: Center(
+                              child: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                          )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    OpenContainer(
                       transitionDuration: Duration(milliseconds: 400),
                       transitionType: ContainerTransitionType.fadeThrough,
                       openBuilder: (BuildContext context, VoidCallback _) {
@@ -117,7 +173,9 @@ class JobsView extends StatelessWidget {
                         );
                       },
                     )
-                  : null,
+                  ],
+                )
+              : null,
         ),
       ),
     );
