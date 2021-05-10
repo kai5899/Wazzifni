@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
+import 'package:locateme/Controllers/Root.dart';
 import 'package:locateme/Pages/FirstTimeView.dart';
 import 'package:locateme/phonePages/PhonePageOne.dart';
 import 'package:locateme/phonePages/PhonePageThree.dart';
@@ -182,6 +183,6 @@ class _PhoneRegistrationState extends State<PhoneRegistration> {
   }
 
   toHomeScreen() {
-    Get.to(() => FirstTimeView());
+    Get.offAll(() => Root());
   }
 }

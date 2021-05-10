@@ -6,8 +6,8 @@ import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Controllers/AppController.dart';
 import 'package:locateme/Pages/FirstTimeView.dart';
 import 'package:locateme/Pages/RegUserPages/HolderView.dart';
-import 'package:locateme/Pages/PhoneView.dart';
 import 'package:locateme/Pages/ServiceProviderPages/%D9%8DServiceProviderHolderView.dart';
+import 'package:locateme/Pages/WelcomeView.dart';
 import 'AuthController.dart';
 
 //
@@ -30,7 +30,7 @@ class Root extends StatelessWidget {
               }
             }
           } else {
-            return PhoneRegistration();
+            return WelcomeView();
           }
         } else {
           return Scaffold(
