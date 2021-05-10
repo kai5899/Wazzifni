@@ -27,13 +27,12 @@ class AppController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-     checkPermissions();
+    checkPermissions();
     controller = AnimationController(
         duration: Duration(milliseconds: 400),
         reverseDuration: Duration(milliseconds: 400),
         vsync: this);
 
-   
     getDrawerColor();
   }
 
@@ -46,7 +45,9 @@ class AppController extends GetxController with SingleGetTickerProviderMixin {
 
   getDrawerColor() {
     int a = storage.read("drawerColor");
-    drawerColor.value = Color(a);
+    if (a != null) {
+      drawerColor.value = Color(a);
+    }
   }
 
   updateDrawerColor(Color newColor) {
