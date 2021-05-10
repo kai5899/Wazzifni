@@ -28,29 +28,29 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  get: ^4.1.3
-  google_fonts: ^2.0.0
-  pin_code_fields: ^7.0.0
-  font_awesome_flutter: ^9.0.0
-  geolocator: ^7.0.3
-  syncfusion_flutter_sliders: ^19.1.54-beta
-  google_maps_flutter: ^2.0.2
-  cloud_firestore: ^1.0.3
-  firebase_auth: ^1.0.1
-  firebase_core: ^1.0.2
-  firebase_storage: ^8.0.1
-  get_storage: ^2.0.2
-  sliding_up_panel: ^1.0.2
-  url_launcher: ^6.0.3
-  rflutter_alert: ^2.0.2
-  image_picker: ^0.7.4
-  permission_handler: ^6.1.1
-  day_night_switcher: ^0.2.0+1
-  animations: ^2.0.0
-  geocoder: ^0.2.1
-  flutter_switch: ^0.3.1
-  flex_color_picker: ^2.0.1
-  flutter_slidable: ^0.6.0
+  get: ^4.1.3 #state management MCV  : Model controller view , seperation of concern UI / Backend / functions //// extra features : rounting , theme and localization
+  google_fonts: ^2.0.0 #fonts
+  pin_code_fields: ^7.0.0 # input the otp code 
+  font_awesome_flutter: ^9.0.0 #extra icons
+  geolocator: ^7.0.3 # locations gps maps - > position lat long
+  syncfusion_flutter_sliders: ^19.1.54-beta # slider
+  google_maps_flutter: ^2.0.2 # google map implementations
+  cloud_firestore: ^1.0.3 # firestore database
+  firebase_auth: ^1.0.1 # authentication - > phone number auth
+  firebase_core: ^1.0.2 # firebase app initialize the firebase app to use the services.
+  firebase_storage: ^8.0.1 # to save photos
+  get_storage: ^2.0.2 # sharedprefrences  but to the get library
+  sliding_up_panel: ^1.0.2 #sliding up when we click on a service provider we have a panel
+  url_launcher: ^6.0.3 #launch the whatsapp app and dialer app 
+  rflutter_alert: ^2.0.2 # alerts like dialogs
+  image_picker: ^0.7.4 # to access gallery or camera 
+  permission_handler: ^6.1.1 # storage permission / location
+  day_night_switcher: ^0.2.0+1 # animation ready to change the theme ,
+  animations: ^2.0.0 #open Container 
+  geocoder: ^0.2.1 # to get names of locations
+  flutter_switch: ^0.3.1 # switcher -> service provider profile page am i available 
+  flex_color_picker: ^2.0.1 #Coloring drawer background color nice to have user experience
+  flutter_slidable: ^0.6.0 # offer delete if the offer is urs slide to delete it 
 
 dev_dependencies:
   flutter_test:
