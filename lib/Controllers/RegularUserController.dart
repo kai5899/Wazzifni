@@ -84,7 +84,8 @@ class RegularUserController extends GetxController {
       _addMarker(serviceProvider);
     }
   }
-
+ 
+ // to create  a specifc format to show markers on map
   Future<Uint8List> _getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
     Codec codec = await instantiateImageCodec(data.buffer.asUint8List(),
