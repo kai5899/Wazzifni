@@ -23,14 +23,14 @@ class JobsView extends StatelessWidget {
           body: jobsController.offers.length == 0
               ? Center(
                   child: Text(
-                    "no offers",
+                    "no offers".tr,
                     style: mainStyle(fontSize: 24),
                   ),
                 )
               : Column(
                   children: [
                     Text(
-                      "Last update on\n" +
+                      "last update on".tr +"\n"+
                           jobsController.time.value
                               .toLocal()
                               .toString()
@@ -68,7 +68,7 @@ class JobsView extends StatelessWidget {
                                         jobsController.offers[index].posterId
                                     ? [
                                         IconSlideAction(
-                                          caption: 'Delete',
+                                          caption: 'delete'.tr,
                                           color: Colors.red,
                                           icon: Icons.delete,
                                           onTap: () {
@@ -105,7 +105,7 @@ class JobsView extends StatelessWidget {
                                   ),
                                   trailing: _authController.user.uid ==
                                           jobsController.offers[index].posterId
-                                      ? Text("by you")
+                                      ? Text("by you".tr)
                                       : Container(
                                           height: 0,
                                           width: 0,

@@ -118,28 +118,6 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
               ),
-              authController.localUser["type"] == "Service Provider"
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        title: Text(
-                          "profession".tr,
-                          style:
-                              mainStyle(fontColor: context.theme.primaryColor),
-                        ),
-                        subtitle: Text(
-                          authController.localUser["profession"].toString(),
-                          style: mainStyle(
-                            fontSize: 36,
-                            fontColor: mainColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      height: 0,
-                    ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, top: 16),
                 child: ListTile(
@@ -176,7 +154,7 @@ class ProfileView extends StatelessWidget {
                         closeFunction: () {
                           Get.back();
                         },
-                        title: "Edit Name",
+                        title: "Edit Name".tr,
                         style: AlertStyle(
                           animationType: AnimationType.grow,
                           animationDuration: Duration(milliseconds: 500),
@@ -221,6 +199,40 @@ class ProfileView extends StatelessWidget {
                   },
                 ),
               ),
+              authController.localUser["type"] == "Service Provider"
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text(
+                          "profession".tr,
+                          style:
+                              mainStyle(fontColor: context.theme.primaryColor),
+                        ),
+                        subtitle: Text(
+                          authController.localUser["profession"].toString(),
+                          style: mainStyle(
+                            fontSize: 36,
+                            fontColor: mainColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        trailing: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: Image.asset(
+                                      "assets/icons/${authController.localUser["profession"].toString().toLowerCase()}.png")
+                                  .image,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      height: 0,
+                    ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: ListTile(
@@ -230,7 +242,7 @@ class ProfileView extends StatelessWidget {
                         closeFunction: () {
                           Get.back();
                         },
-                        title: "Edit BirthDay",
+                        title: "Edit BirthDay".tr,
                         style: AlertStyle(
                           animationType: AnimationType.grow,
                           animationDuration: Duration(milliseconds: 500),
@@ -366,7 +378,7 @@ class ProfileView extends StatelessWidget {
                                     left: 32,
                                     right: 32,
                                   ),
-                                  child: Text("Old Bio",
+                                  child: Text("Old Bio".tr,
                                       style: mainStyle(fontSize: 24),
                                       textAlign: TextAlign.start),
                                 ),
@@ -385,12 +397,12 @@ class ProfileView extends StatelessWidget {
                                     left: 32,
                                     right: 32,
                                   ),
-                                  child: Text("New Bio",
+                                  child: Text("New Bio".tr,
                                       style: mainStyle(fontSize: 24),
                                       textAlign: TextAlign.start),
                                 ),
                                 FieldEdited(
-                                  label: "Bio",
+                                  label: "bio".tr,
                                   color: mainColor,
                                   isPassword: false,
                                   maxLine: 5,
@@ -483,7 +495,7 @@ class ProfileView extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 16, top: 16.0),
                       child: ListTile(
                         title: Text(
-                          "Am I Available ?".tr,
+                          "am i available ? ".tr,
                           style: mainStyle(
                             fontColor: context.theme.primaryColor,
                             fontSize: 24,

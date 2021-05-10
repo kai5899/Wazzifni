@@ -16,7 +16,7 @@ class ServiceProviderHomeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Click on",
+              "click on".tr,
               style: mainStyle(
                 fontSize: 48,
                 fontColor: context.theme.primaryColor,
@@ -50,7 +50,7 @@ class ServiceProviderHomeView extends StatelessWidget {
               },
             ),
             Text(
-              "to navigate !",
+              "to navigate".tr,
               style: mainStyle(
                 fontSize: 48,
                 fontColor: context.theme.primaryColor,

@@ -48,7 +48,7 @@ class HolderView extends StatelessWidget {
               title: Text(
                 getTitle(controller.selectedPage.value),
                 style: mainStyle(
-                    fontColor: context.theme.primaryColor, fontSize: 48),
+                    fontColor: context.theme.primaryColor, fontSize: 36),
               ),
               leading: IconButton(
                 onPressed: () {

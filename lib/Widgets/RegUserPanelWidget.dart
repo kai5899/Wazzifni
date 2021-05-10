@@ -139,7 +139,7 @@ class RegUserPanelWidget extends StatelessWidget {
                                 padding: const EdgeInsets.all(16),
                                 child: Center(
                                   child: Text(
-                                    "Add Review",
+                                    "Add Review".tr,
                                     style: mainStyle(
                                         fontColor:
                                             context.theme.backgroundColor),
@@ -171,7 +171,7 @@ class RegUserPanelWidget extends StatelessWidget {
                                 padding: const EdgeInsets.all(16),
                                 child: Center(
                                   child: Text(
-                                    "Read Reviews",
+                                    "Read Reviews".tr,
                                     style: mainStyle(
                                         fontColor: context.theme.accentColor),
                                   ),
@@ -262,7 +262,7 @@ class RegUserPanelWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Service Provider Bio",
+                              "Service Provider Bio".tr,
                               style: mainStyle(
                                 fontSize: 30,
                                 fontColor: mainColor,
@@ -300,7 +300,7 @@ class RegUserPanelWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Birthday",
+                              "birthDay".tr,
                               style: mainStyle(
                                 fontSize: 30,
                                 fontColor: mainColor,
@@ -338,7 +338,7 @@ class RegUserPanelWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Price Range",
+                              "Price Range".tr,
                               style: mainStyle(
                                 fontSize: 30,
                                 fontColor: mainColor,
@@ -386,7 +386,7 @@ class ReadReviews extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          "Reviews",
+          "Reviews".tr,
           style: mainStyle(
             fontColor: context.theme.primaryColor,
             fontSize: 30,
@@ -457,7 +457,7 @@ class AddReview extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          "Add a Review",
+          "Add a Review".tr,
           style: mainStyle(
             fontColor: context.theme.primaryColor,
             fontSize: 30,
@@ -485,7 +485,7 @@ class AddReview extends StatelessWidget {
                 left: 32,
                 right: 32,
               ),
-              child: Text("Write a Review",
+              child: Text("Write a Review".tr,
                   style: mainStyle(
                     fontSize: 24,
                     fontColor: context.theme.primaryColor,
@@ -493,7 +493,7 @@ class AddReview extends StatelessWidget {
                   textAlign: TextAlign.start),
             ),
             FieldEdited(
-              label: "Review",
+              label: "Review".tr,
               color: mainColor,
               isPassword: false,
               maxLine: 5,

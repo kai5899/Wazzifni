@@ -31,11 +31,11 @@ class RegularUserHomeView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 32),
+                      padding: const EdgeInsets.only(left: 32, right: 32),
                       child: Row(
                         children: [
                           Text(
-                            "Filter :",
+                            "Filter :".tr,
                             style: mainStyle(
                                 fontSize: 24,
                                 fontColor: context.theme.primaryColor,
@@ -48,7 +48,7 @@ class RegularUserHomeView extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 32),
                       child: DropdownButton<String>(
                         hint: Text(
-                          "Select item",
+                          "Select item".tr,
                           style: mainStyle(
                               fontSize: 24,
                               fontColor: context.theme.primaryColor,
@@ -64,6 +64,21 @@ class RegularUserHomeView extends StatelessWidget {
                             value: user,
                             child: Row(
                               children: <Widget>[
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                      image: Image.asset(
+                                              "assets/icons/${user.toLowerCase()}.png")
+                                          .image,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Text(
                                   user,
                                   style: mainStyle(
@@ -96,7 +111,7 @@ class RegularUserHomeView extends StatelessWidget {
                             },
                             child: Center(
                               child: Text(
-                                "Refresh",
+                                "Refresh".tr,
                                 style: mainStyle(
                                     fontColor: context.theme.accentColor),
                               ),
@@ -110,7 +125,7 @@ class RegularUserHomeView extends StatelessWidget {
                             },
                             child: Center(
                               child: Text(
-                                "Reset Filter",
+                                "Reset Filter".tr,
                                 style: mainStyle(
                                     fontColor: context.theme.accentColor),
                               ),
@@ -211,14 +226,18 @@ class RegularUserHomeView extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "Name : ${serviceProvider.fullName.capitalizeFirst}",
+                                                    "fullName".tr +
+                                                        " : " +
+                                                        "${serviceProvider.fullName.capitalizeFirst}",
                                                     style: mainStyle(
                                                       fontColor: Colors.white,
                                                       fontSize: 24,
                                                     ),
                                                   ),
                                                   Text(
-                                                    "Profession : ${serviceProvider.profession.capitalizeFirst}",
+                                                    "profession".tr +
+                                                        " : " +
+                                                        "${serviceProvider.profession.capitalizeFirst}",
                                                     style: mainStyle(
                                                       fontColor: Colors.white,
                                                       fontSize: 24,

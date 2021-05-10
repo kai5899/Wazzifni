@@ -35,7 +35,7 @@ class AboutTheAppView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "App Version",
+                  "App Version".tr,
                   style: mainStyle(
                     fontColor: context.theme.primaryColor,
                     fontSize: 24,
@@ -55,7 +55,7 @@ class AboutTheAppView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Our project idea is a mobile application that will support people who have vocational skills like electric, painter, or carpenter and connect them with those who are in need for such services. Our application will also allow people to post job vacancies so that users can make use of our app to find jobs in certain places online.",
+                  "aboutAppMessage".tr,
                   style: mainStyle(
                       fontSize: 24, fontColor: context.theme.primaryColor),
                   textAlign: TextAlign.center,
@@ -64,7 +64,7 @@ class AboutTheAppView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Wazefini Team © 2021 ",
+                  "copyRightMessage".tr,
                   style: montserratStyle(
                       fontSize: 24, fontColor: Colors.grey[500]),
                 ),
