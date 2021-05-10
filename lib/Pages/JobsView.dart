@@ -175,7 +175,24 @@ class JobsView extends StatelessWidget {
                     )
                   ],
                 )
-              : null,
+              : Material(
+                  elevation: 3,
+                  borderRadius: BorderRadius.circular(360),
+                  child: GestureDetector(
+                    onTap: () {
+                      jobsController.getOffers();
+                    },
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: sColor3,
+                      child: Center(
+                          child: Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      )),
+                    ),
+                  ),
+                ),
         ),
       ),
     );
