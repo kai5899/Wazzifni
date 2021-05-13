@@ -1,11 +1,14 @@
-class JobOffer {
+import 'package:equatable/equatable.dart';
+
+class JobOffer extends Equatable {
   int id;
   String jobTitle;
   String jobType; //full time , part time ,intern ,freelance
   String jobDescription;
   String posterId;
   List<dynamic> requirements;
-  String salary;
+  double salary;
+  String currency;
   double latitude;
   double longitude;
   String location;
@@ -18,6 +21,7 @@ class JobOffer {
     this.jobType,
     this.salary,
     this.latitude,
+    this.currency,
     this.longitude,
     this.posterId,
     this.location,
@@ -33,6 +37,7 @@ class JobOffer {
       longitude: json["longitude"],
       latitude: json["latitude"],
       salary: json["salary"],
+      currency: json["currency"],
       posterId: json["posterId"],
       location: json["location"],
     );
@@ -48,8 +53,24 @@ class JobOffer {
       "jobRequirements": this.requirements,
       "jobType": this.jobType,
       "salary": this.salary,
+      "currency": this.currency,
       "posterId": this.posterId,
       "location": this.location,
     };
   }
+
+  @override
+  List<Object> get props => [
+        id,
+        jobDescription,
+        jobTitle,
+        jobType,
+        location,
+        currency,
+        salary,
+        latitude,
+        longitude,
+        posterId,
+        requirements
+      ];
 }

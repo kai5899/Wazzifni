@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Models/ServiceProvider.dart';
@@ -43,10 +44,17 @@ class RegularUserController extends GetxController {
     userType.value = newType;
   }
 
-  addReview(String uid, String review) {
-    FirebaseFirestore.instance.collection('users').doc(uid).update({
-      'reviews': FieldValue.arrayUnion([review])
-    });
+  addReview(String uid, String review, String posterId) {
+    // FirebaseFirestore.instance.collection('users').doc(uid).update({
+    //   'reviews': FieldValue.arrayUnion([review])
+    // });
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("reviews")
+        .doc(id)
+        .set({"review": review, "id": id, "posterId": posterId});
   }
 
   getServices() async {
@@ -59,6 +67,9 @@ class RegularUserController extends GetxController {
     for (int i = 0; i < docs.length; i++) {
       ServiceProvider serviceProvider =
           ServiceProvider.fromJson(docs[i].data());
+      serviceProvider.position = await printLocationName(LatLng(
+          double.parse(serviceProvider.latitude),
+          double.parse(serviceProvider.longitude)));
       serviceProviders.add(serviceProvider);
       _addMarker(serviceProvider);
     }
@@ -75,6 +86,17 @@ class RegularUserController extends GetxController {
     }
   }
 
+  filterBylocation(text) {
+    markers.clear();
+    filteredList = RxList(serviceProviders
+        .where((e) => e.position.toLowerCase().contains(text))
+        .toList());
+    for (int i = 0; i < filteredList.length; i++) {
+      ServiceProvider serviceProvider = filteredList[i];
+      _addMarker(serviceProvider);
+    }
+  }
+
   resetFilter() {
     userType.value = null;
     markers.clear();
@@ -84,8 +106,8 @@ class RegularUserController extends GetxController {
       _addMarker(serviceProvider);
     }
   }
- 
- // to create  a specifc format to show markers on map
+
+  // to create  a specifc format to show markers on map
   Future<Uint8List> _getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
     Codec codec = await instantiateImageCodec(data.buffer.asUint8List(),
@@ -122,6 +144,21 @@ class RegularUserController extends GetxController {
       fabHeight.value = _initFabHeight;
     } else {
       fabHeight.value = pos * (panelHeightOpen - 10) + _initFabHeight;
+    }
+  }
+
+  Future<String> printLocationName(LatLng position) async {
+    if (position != null) {
+      final coordinates =
+          new Coordinates(position.latitude, position.longitude);
+      List<Address> addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      Address first = addresses[1];
+      // print(addresses.toString());
+      print("${first.locality}  , ${first.adminArea}");
+      return "${first.locality}  , ${first.adminArea}";
+    } else {
+      return "Unable to determin";
     }
   }
 }

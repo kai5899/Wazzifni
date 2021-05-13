@@ -9,6 +9,7 @@ class ServiceProvider {
   String latitude;
   String bio;
   bool available;
+  String position;
 
   String profession;
   String priceRange;
@@ -26,6 +27,7 @@ class ServiceProvider {
     this.latitude,
     this.bio,
     this.available,
+    this.position,
   });
 
   factory ServiceProvider.fromJson(Map<String, dynamic> json) {

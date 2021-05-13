@@ -32,79 +32,80 @@ class ProfileView extends StatelessWidget {
                       authController: authController);
                 },
                 child: Container(
-                    height: Get.height * 0.25,
-                    width: Get.height * 0.25,
-                    decoration: BoxDecoration(
-                      color: mainColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Stack(
-                      children: [
-                        _profileController.uploadTask.value == null
-                            ? Container()
-                            : StreamBuilder(
-                                stream: _profileController
-                                    .uploadTask.value.snapshotEvents,
-                                builder: (BuildContext context,
-                                    AsyncSnapshot snapshot) {
-                                  Widget indicator;
-                                  if (snapshot.hasData) {
-                                    final TaskSnapshot snap = snapshot.data;
-                                    indicator = CircularProgressIndicator(
-                                      strokeWidth: 7,
-                                      value: snap.bytesTransferred /
-                                          snap.totalBytes,
-                                      backgroundColor: mainColor,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          sColor1),
-                                    );
-                                    return Container(
-                                      height: Get.height * 0.25,
-                                      width: Get.height * 0.25,
-                                      decoration: BoxDecoration(
-                                        color: mainColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: indicator,
-                                    );
-                                  } else {
-                                    indicator = const Text('Starting...');
-                                    return ListTile(
-                                      title: indicator,
-                                    );
-                                  }
-                                },
-                              ),
-                        authController.localUser["photoUrl"] == "none" ||
-                                authController.localUser["photoUrl"] == null
-                            ? Center(
-                                child: Text(
-                                  authController.localUser["fullName"][0],
-                                  style: mainStyle(
-                                    fontColor: Colors.white,
-                                    fontSize: Get.height * 0.2,
-                                  ),
-                                ),
-                              )
-                            : Center(
-                                child: Container(
-                                  height: Get.height * 0.24,
-                                  width: Get.height * 0.24,
-                                  decoration: BoxDecoration(
-                                      // color: sColor3,
+                  height: Get.height * 0.25,
+                  width: Get.height * 0.25,
+                  decoration: BoxDecoration(
+                    color: mainColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Stack(
+                    children: [
+                      _profileController.uploadTask.value == null
+                          ? Container()
+                          : StreamBuilder(
+                              stream: _profileController
+                                  .uploadTask.value.snapshotEvents,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                Widget indicator;
+                                if (snapshot.hasData) {
+                                  final TaskSnapshot snap = snapshot.data;
+                                  indicator = CircularProgressIndicator(
+                                    strokeWidth: 7,
+                                    value:
+                                        snap.bytesTransferred / snap.totalBytes,
+                                    backgroundColor: mainColor,
+                                    valueColor:
+                                        AlwaysStoppedAnimation<Color>(sColor1),
+                                  );
+                                  return Container(
+                                    height: Get.height * 0.25,
+                                    width: Get.height * 0.25,
+                                    decoration: BoxDecoration(
+                                      color: mainColor,
                                       shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: Image.network(
-                                          authController.localUser["photoUrl"],
-                                          key: ValueKey(
-                                              new Random().nextInt(100)),
-                                        ).image,
-                                        fit: BoxFit.cover,
-                                      )),
+                                    ),
+                                    child: indicator,
+                                  );
+                                } else {
+                                  indicator = const Text('Starting...');
+                                  return ListTile(
+                                    title: indicator,
+                                  );
+                                }
+                              },
+                            ),
+                      authController.localUser["photoUrl"] == "none" ||
+                              authController.localUser["photoUrl"] == null
+                          ? Center(
+                              child: Text(
+                                authController.localUser["fullName"][0],
+                                style: mainStyle(
+                                  fontColor: Colors.white,
+                                  fontSize: Get.height * 0.2,
                                 ),
                               ),
-                      ],
-                    )),
+                            )
+                          : Center(
+                              child: Container(
+                                height: Get.height * 0.24,
+                                width: Get.height * 0.24,
+                                decoration: BoxDecoration(
+                                    // color: sColor3,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: Image.network(
+                                        authController.localUser["photoUrl"],
+                                        key:
+                                            ValueKey(new Random().nextInt(100)),
+                                      ).image,
+                                      fit: BoxFit.cover,
+                                    )),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 16),

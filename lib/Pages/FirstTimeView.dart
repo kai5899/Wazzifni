@@ -1,15 +1,19 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Configuration/Constants.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Controllers/AuthController.dart';
 import 'package:locateme/Controllers/FirstTimeRegisterController.dart';
 import 'package:locateme/Widgets/CustomInputField.dart';
+import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class FirstTimeView extends StatelessWidget {
@@ -126,16 +130,6 @@ class FirstTimeView extends StatelessWidget {
                   icon: Icons.text_format_outlined,
                   type: TextInputType.name,
                   maxLine: null,
-                ),
-                FieldEdited(
-                  label: "Bio",
-                  color: mainColor,
-                  isPassword: false,
-                  maxLine: 5,
-                  controller: _kTimeController.bioController,
-                  textColor: Colors.white,
-                  type: TextInputType.multiline,
-                  icon: Icons.text_format_outlined,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 32, right: 32),
@@ -260,69 +254,78 @@ class FirstTimeView extends StatelessWidget {
                     ),
                   ],
                 ),
+                Text(
+                  "Select location",
+                  textAlign: TextAlign.center,
+                  style: mainStyle(
+                    fontSize: 24,
+                    fontColor: mainColor,
+                  ),
+                ),
+                Text(
+                  "By default your current location will be selected",
+                  textAlign: TextAlign.center,
+                  style: mainStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  child: Container(
+                    height: 60,
+                    width: Get.width * 0.6,
+                    decoration: BoxDecoration(
+                      color: mainColor,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Pick Location",
+                        style: mainStyle(
+                          fontColor: Colors.white,
+                          fontSize: 36,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    Get.to(LocationPickPage());
+                  },
+                ),
                 SizedBox(
                   height: 20,
                 ),
-                AnimatedOpacity(
-                  opacity: _kTimeController.userType.value != "Service Provider"
-                      ? 0
-                      : 1,
-                  duration: Duration(milliseconds: 300),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 32,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Price : ${(_kTimeController.values.value.start * 1000).toStringAsFixed(0)} : ${(_kTimeController.values.value.end * 1000).toStringAsFixed(0)}",
-                          style: mainStyle(
-                              fontSize: 24,
-                              fontColor: mainColor,
-                              fontWeight: FontWeight.w500),
+                _kTimeController.userType.value != "Service Provider"
+                    ? Container(
+                        height: 0,
+                      )
+                    : FieldEdited(
+                        label: "Bio",
+                        color: mainColor,
+                        isPassword: false,
+                        maxLine: 5,
+                        controller: _kTimeController.bioController,
+                        textColor: Colors.white,
+                        type: TextInputType.multiline,
+                        icon: Icons.text_format_outlined,
+                      ),
+                _kTimeController.userType.value != "Service Provider"
+                    ? Container(
+                        height: 0,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          left: 32,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                AnimatedOpacity(
-                  opacity: _kTimeController.userType.value != "Service Provider"
-                      ? 0
-                      : 1,
-                  duration: Duration(milliseconds: 300),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SfRangeSlider(
-                      activeColor: sColor3,
-                      inactiveColor: mainColor,
-                      min: 20.0,
-                      max: 10000.0,
-                      values: _kTimeController.values.value,
-                      interval: 1000,
-                      showTicks: true,
-                      showLabels: true,
-                      enableTooltip: true,
-                      minorTicksPerInterval: 1,
-                      onChanged: (SfRangeValues values) {
-                        _kTimeController.changeValues(values);
-                      },
-                    ),
-                  ),
-                ),
-                AnimatedOpacity(
-                  opacity: _kTimeController.userType.value != "Service Provider"
-                      ? 0
-                      : 1,
-                  duration: Duration(milliseconds: 300),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 32),
                         child: Row(
                           children: [
                             Text(
-                              "Your Profession is :",
+                              "Price : ${(_kTimeController.values.value.start * 1000).toStringAsFixed(0)} : ${(_kTimeController.values.value.end * 1000).toStringAsFixed(0)}",
                               style: mainStyle(
                                   fontSize: 24,
                                   fontColor: mainColor,
@@ -331,35 +334,77 @@ class FirstTimeView extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 32),
-                        child: DropdownButton<String>(
-                          hint: Text("Select Profession"),
-                          value: _kTimeController.profession.value,
-                          onChanged: (String value) {
-                            _kTimeController.changeProfession(value);
+                _kTimeController.userType.value != "Service Provider"
+                    ? Container(
+                        height: 0,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SfRangeSlider(
+                          activeColor: sColor3,
+                          inactiveColor: mainColor,
+                          min: 20.0,
+                          max: 10000.0,
+                          values: _kTimeController.values.value,
+                          interval: 1000,
+                          showTicks: true,
+                          showLabels: true,
+                          enableTooltip: true,
+                          minorTicksPerInterval: 1,
+                          onChanged: (SfRangeValues values) {
+                            _kTimeController.changeValues(values);
                           },
-                          items: profesions.map((String user) {
-                            return DropdownMenuItem<String>(
-                              value: user,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    user,
-                                    style: mainStyle(
-                                        fontSize: 24,
-                                        fontColor: mainColor,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                _kTimeController.userType.value != "Service Provider"
+                    ? Container(
+                        height: 0,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 32),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Your Profession is :",
+                                  style: mainStyle(
+                                      fontSize: 24,
+                                      fontColor: mainColor,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 32),
+                            child: DropdownButton<String>(
+                              hint: Text("Select Profession"),
+                              value: _kTimeController.profession.value,
+                              onChanged: (String value) {
+                                _kTimeController.changeProfession(value);
+                              },
+                              items: profesions.map((String user) {
+                                return DropdownMenuItem<String>(
+                                  value: user,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text(
+                                        user,
+                                        style: mainStyle(
+                                            fontSize: 24,
+                                            fontColor: mainColor,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      ),
                 TweenAnimationBuilder(
                   tween: Tween(begin: -60.0, end: Get.height * 0.1 * 0.2),
                   duration: Duration(milliseconds: 500),
@@ -397,7 +442,6 @@ class FirstTimeView extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      print("proceed was clicked");
                       _kTimeController.save(
                           _authController.user, _authController);
                       _kTimeController.dispose();
@@ -414,6 +458,116 @@ class FirstTimeView extends StatelessWidget {
       //     print(_authController.localUser);
       //   },
       // ),
+    );
+  }
+}
+
+class LocationPickPage extends StatefulWidget {
+  @override
+  _LocationPickPageeState createState() => _LocationPickPageeState();
+}
+
+class _LocationPickPageeState extends State<LocationPickPage> {
+  Completer<GoogleMapController> _controller = Completer();
+  final FirstTimeController firstTimeController =
+      Get.put(FirstTimeController());
+  MapPickerController mapPickerController = MapPickerController();
+
+  CameraPosition cameraPosition = CameraPosition(
+    target: LatLng(31.2060916, 29.9187),
+    zoom: 14.4746,
+  );
+
+  Address address;
+
+  var textController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    cameraPosition = CameraPosition(
+      target: LatLng(firstTimeController.currentPosition.value.latitude,
+          firstTimeController.currentPosition.value.longitude),
+      zoom: 14.4746,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: MapPicker(
+              // pass icon widget
+              iconWidget: Icon(
+                Icons.location_pin,
+                size: 50,
+              ),
+              //add map picker controller
+              mapPickerController: mapPickerController,
+              child: GoogleMap(
+                zoomControlsEnabled: false,
+                // hide location button
+                myLocationButtonEnabled: false,
+                mapType: MapType.normal,
+                //  camera position
+                initialCameraPosition: cameraPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onCameraMoveStarted: () {
+                  // notify map is moving
+                  mapPickerController.mapMoving();
+                },
+                onCameraMove: (cameraPosition) {
+                  this.cameraPosition = cameraPosition;
+                },
+                onCameraIdle: () async {
+                  // notify map stopped moving
+                  mapPickerController.mapFinishedMoving();
+                  //get address name from camera position
+                  List<Address> addresses = await Geocoder.local
+                      .findAddressesFromCoordinates(Coordinates(
+                          cameraPosition.target.latitude,
+                          cameraPosition.target.longitude));
+                  // update the ui with the address
+                  textController.text = '${addresses.first?.addressLine ?? ''}';
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("hhello");
+          firstTimeController.currentPosition.value = cameraPosition.target;
+          firstTimeController.update();
+          Get.back();
+        },
+        child: Icon(Icons.location_city),
+      ),
+      bottomNavigationBar: GestureDetector(
+        child: BottomAppBar(
+          color: Colors.transparent,
+          elevation: 0,
+          child: GestureDetector(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              color: Colors.blue,
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero, border: InputBorder.none),
+                controller: textController,
+                style: TextStyle(fontSize: 12, color: Colors.white),
+              ),
+              // icon: Icon(Icons.directions_boat),
+            ),
+          ),
+        ),
+        onTap: () {},
+      ),
     );
   }
 }

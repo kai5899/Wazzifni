@@ -132,13 +132,22 @@ class AddJobView extends StatelessWidget {
               controller: jobsController.descriptionController,
             ),
             FieldEdited(
-              maxLine: 3,
               isPassword: false,
               color: mainColor,
               textColor: Colors.white,
               icon: Icons.monetization_on,
+              type: TextInputType.number,
               label: "Job Salary",
               controller: jobsController.salaryController,
+            ),
+            FieldEdited(
+              isPassword: false,
+              color: mainColor,
+              textColor: Colors.white,
+              icon: Icons.monetization_on,
+              type: TextInputType.text,
+              label: "Salary currency",
+              controller: jobsController.currencyController,
             ),
             Padding(
               padding: EdgeInsets.all(16),

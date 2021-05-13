@@ -51,6 +51,9 @@ dependencies:
   flutter_switch: ^0.3.1 # switcher -> service provider profile page am i available 
   flex_color_picker: ^2.0.1 #Coloring drawer background color nice to have user experience
   flutter_slidable: ^0.6.0 # offer delete if the offer is urs slide to delete it 
+  flutter_rating_bar: ^4.0.0
+  equatable: ^2.0.0
+  map_pin_picker: ^0.0.1
 
 dev_dependencies:
   flutter_test:

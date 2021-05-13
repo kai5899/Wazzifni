@@ -2,12 +2,14 @@ import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
+import 'package:locateme/Controllers/AuthController.dart';
 import 'package:locateme/Controllers/RegularUserController.dart';
-import 'package:locateme/Models/ServiceProvider.dart';
+import 'package:locateme/Models/UserModel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'CustomInputField.dart';
@@ -21,7 +23,7 @@ class RegUserPanelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ServiceProvider serviceProvider = controller.selectedProvider.value;
+    // ServiceProvider serviceProvider = controller.selectedProvider.value;
     return Obx(
       () => MediaQuery.removePadding(
         context: context,
@@ -69,7 +71,8 @@ class RegUserPanelWidget extends StatelessWidget {
                             color: sColor3,
                           ),
                           onPressed: () {
-                            launch("tel://${serviceProvider.phoneNumber}");
+                            launch(
+                                "tel://${controller.selectedProvider.value.phoneNumber}");
                           },
                         ),
                         Container(
@@ -80,20 +83,29 @@ class RegUserPanelWidget extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(36),
                                 color: Colors.grey[200],
-                                image: serviceProvider.photoUrl == "none"
+                                image: controller
+                                            .selectedProvider.value.photoUrl ==
+                                        "none"
                                     ? null
                                     : DecorationImage(
-                                        image: Image.network(
-                                                serviceProvider.photoUrl)
+                                        image: Image.network(controller
+                                                .selectedProvider
+                                                .value
+                                                .photoUrl)
                                             .image,
                                         fit: BoxFit.cover),
                               ),
-                              child: serviceProvider.photoUrl == "none"
-                                  ? Center(
-                                      child: Text(serviceProvider.fullName[0]
-                                          .toLowerCase()),
-                                    )
-                                  : null,
+                              child:
+                                  controller.selectedProvider.value.photoUrl ==
+                                          "none"
+                                      ? Center(
+                                          child: Text(controller
+                                              .selectedProvider
+                                              .value
+                                              .fullName[0]
+                                              .toLowerCase()),
+                                        )
+                                      : null,
                             ),
                           ),
                         ),
@@ -105,7 +117,7 @@ class RegUserPanelWidget extends StatelessWidget {
                           ),
                           onPressed: () {
                             var whatsappUrl =
-                                "whatsapp://send?phone=${serviceProvider.phoneNumber}";
+                                "whatsapp://send?phone=${controller.selectedProvider.value.phoneNumber}";
                             launch(whatsappUrl);
                           },
                         ),
@@ -122,7 +134,7 @@ class RegUserPanelWidget extends StatelessWidget {
                             openBuilder:
                                 (BuildContext context, VoidCallback _) {
                               return AddReview(
-                                uid: serviceProvider.uid,
+                                uid: controller.selectedProvider.value.uid,
                               );
                             },
                             closedElevation: 0.0,
@@ -154,7 +166,7 @@ class RegUserPanelWidget extends StatelessWidget {
                             openBuilder:
                                 (BuildContext context, VoidCallback _) {
                               return ReadReviews(
-                                uid: serviceProvider.uid,
+                                uid: controller.selectedProvider.value.uid,
                               );
                             },
                             closedElevation: 0.0,
@@ -206,7 +218,8 @@ class RegUserPanelWidget extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Align(
                                       child: Text(
-                                        serviceProvider.profession,
+                                        controller
+                                            .selectedProvider.value.profession,
                                         style: mainStyle(
                                           fontSize: 20,
                                           fontColor: Colors.blueGrey,
@@ -222,7 +235,8 @@ class RegUserPanelWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16),
                                     child: Text(
-                                      serviceProvider.fullName.capitalizeFirst,
+                                      controller.selectedProvider.value.fullName
+                                          .capitalizeFirst,
                                       style: mainStyle(fontSize: 36),
                                     ),
                                   ),
@@ -237,7 +251,7 @@ class RegUserPanelWidget extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
                                       image: Image.asset(
-                                    "assets/icons/${serviceProvider.profession.toLowerCase()}.png",
+                                    "assets/icons/${controller.selectedProvider.value.profession.toLowerCase()}.png",
                                   ).image),
                                 ),
                               )
@@ -272,7 +286,7 @@ class RegUserPanelWidget extends StatelessWidget {
                             Wrap(
                               children: [
                                 Text(
-                                  serviceProvider.bio,
+                                  controller.selectedProvider.value.bio,
                                   style: montserratStyle(
                                     fontSize: 18,
                                     fontColor: Colors.white,
@@ -310,7 +324,7 @@ class RegUserPanelWidget extends StatelessWidget {
                             Wrap(
                               children: [
                                 Text(
-                                  serviceProvider.birthDay,
+                                  controller.selectedProvider.value.birthDay,
                                   style: montserratStyle(
                                     fontSize: 18,
                                     fontColor: Colors.white,
@@ -348,18 +362,87 @@ class RegUserPanelWidget extends StatelessWidget {
                             Wrap(
                               children: [
                                 Text(
-                                  "${serviceProvider.priceRange.substring(1, serviceProvider.priceRange.length - 1)} L.L",
+                                  "${controller.selectedProvider.value.priceRange.substring(1, controller.selectedProvider.value.priceRange.length - 1)} L.L",
                                   style: montserratStyle(
                                     fontSize: 18,
                                     fontColor: Colors.white,
                                   ),
                                 )
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+                      child: Container(
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: sColor1,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Star Rate".tr,
+                                style: mainStyle(
+                                  fontSize: 30,
+                                  fontColor: mainColor,
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                              StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(
+                                          controller.selectedProvider.value.uid)
+                                      .collection("stars")
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    double stars = 0;
+                                    List<dynamic> starSet;
+                                    if (!snapshot.hasData) {
+                                      stars = 0;
+                                    } else {
+                                      QuerySnapshot docs = snapshot.data;
+                                      starSet = docs.docs;
+                                      starSet.forEach((element) {
+                                        stars += element["stars"];
+                                      });
+
+                                      if (starSet.length == 0) {
+                                        stars = 0;
+                                      } else {
+                                        stars = stars / starSet.length;
+                                      }
+                                    }
+                                    return Center(
+                                      child: RatingBar.builder(
+                                        initialRating: stars,
+                                        minRating: 0,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        glow: true,
+                                        ignoreGestures: true,
+                                        onRatingUpdate: (rating) {
+                                          //
+                                        },
+                                      ),
+                                    );
+                                  }),
+                            ],
+                          )),
+                    )
                   ],
                 )
               : Center(
@@ -403,42 +486,136 @@ class ReadReviews extends StatelessWidget {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection("users").doc(uid).get(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("users")
+            .doc(uid)
+            .collection("reviews")
+            .orderBy("id", descending: true)
+            .snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            DocumentSnapshot doc = snapshot.data;
+            QuerySnapshot docs = snapshot.data;
             List<dynamic> reviews;
             try {
-              reviews = doc["reviews"];
+              reviews = docs.docs;
             } catch (e) {
               reviews = [];
             }
-            return ListView.builder(
-              itemCount: reviews.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: mainColor,
-                    child: Center(
-                      child: Text("${index + 1}"),
-                    ),
+
+            if (reviews.length == 0) {
+              return Center(
+                child: Text(
+                  "No reviews Yet",
+                  style: mainStyle(
+                    fontColor: context.theme.primaryColor,
+                    fontSize: 36,
                   ),
-                  title: Text(
-                    reviews[index],
-                    style: mainStyle(
-                      fontColor: context.theme.primaryColor,
-                      fontSize: 30,
-                    ),
-                  ),
-                );
-              },
-            );
+                ),
+              );
+            } else {
+              return ListView.separated(
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    color: mainColor,
+                    thickness: 2,
+                    indent: 50,
+                    endIndent: 50,
+                  );
+                },
+                itemCount: reviews.length,
+                itemBuilder: (context, index) {
+                  DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(reviews[index]["id"]));
+
+                  return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(reviews[index]["posterId"])
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      } else {
+                        DocumentSnapshot doc = snapshot.data;
+                        UserModel model = UserModel.fromJson(doc.data());
+                        return Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${index + 1}. By " + model.fullName,
+                                      style: mainStyle(
+                                        fontSize: 36,
+                                        fontColor: sColor1,
+                                      ),
+                                    ),
+                                    Text(date
+                                        .toLocal()
+                                        .toString()
+                                        .substring(0, 16)),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  reviews[index]["review"],
+                                  style: mainStyle(
+                                    fontColor: mainColor,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  );
+                },
+              );
+            }
           }
+        },
+      ),
+      floatingActionButton: OpenContainer(
+        transitionDuration: Duration(milliseconds: 400),
+        transitionType: ContainerTransitionType.fadeThrough,
+        openBuilder: (BuildContext context, VoidCallback _) {
+          return AddReview(
+            uid: uid,
+          );
+        },
+        closedElevation: 0.0,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(360),
+          ),
+        ),
+        closedColor: context.theme.primaryColor,
+        closedBuilder: (BuildContext context, VoidCallback openContainer) {
+          return Container(
+            width: Get.width * 0.3,
+            height: 70,
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: Text(
+                "Add Review".tr,
+                style: mainStyle(fontColor: context.theme.backgroundColor),
+              ),
+            ),
+          );
         },
       ),
     );
@@ -447,6 +624,7 @@ class ReadReviews extends StatelessWidget {
 
 class AddReview extends StatelessWidget {
   final RegularUserController controller = Get.put(RegularUserController());
+  final AuthController authController = Get.put(AuthController());
 
   final String uid;
 
@@ -525,14 +703,55 @@ class AddReview extends StatelessWidget {
                     //     _profileController
                     //         .bioController.text);
                     //
-                    controller.addReview(uid, controller.reviewController.text);
+                    controller.addReview(uid, controller.reviewController.text,
+                        authController.user.uid);
                     controller.reviewController.clear();
                     Get.back();
                   },
                   child: Icon(Icons.check, color: Colors.white),
                 )
               ],
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Center(
+                  child: Text(
+                "Start Review",
+                style: mainStyle(
+                  fontSize: 24,
+                  fontColor: context.theme.primaryColor,
+                ),
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Center(
+                child: RatingBar.builder(
+                  initialRating: 3,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  glow: true,
+                  onRatingUpdate: (rating) {
+                    FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(uid)
+                        .collection("stars")
+                        .doc(authController.user.uid)
+                        .set({
+                      "stars": rating,
+                      "id": authController.user.uid
+                    }).then((value) => Get.back());
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

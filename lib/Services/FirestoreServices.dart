@@ -63,7 +63,10 @@ class FirestoreService {
   }
 
   Future<List<DocumentSnapshot>> getOffers() async {
-    QuerySnapshot _data = await _database.collection("offers").get();
+    QuerySnapshot _data = await _database
+        .collection("offers")
+        .orderBy("id", descending: true)
+        .get();
 
     return _data.docs;
   }

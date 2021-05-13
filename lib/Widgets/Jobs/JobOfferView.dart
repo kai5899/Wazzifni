@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
+import 'package:locateme/Controllers/JobsController.dart';
 import 'package:locateme/Models/JobOffer.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Services/FirestoreServices.dart';
@@ -11,10 +13,12 @@ import 'package:url_launcher/url_launcher.dart';
 class JobOfferViewModel extends StatelessWidget {
   final JobOffer jobOffer;
   final bool byYou;
+  final int index;
 
   final ScrollController sc = ScrollController();
+  final JobsController jobsController = Get.put(JobsController());
 
-  JobOfferViewModel({this.jobOffer, this.byYou});
+  JobOfferViewModel({this.jobOffer, this.byYou, this.index});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +154,7 @@ class JobOfferViewModel extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
               child: Text(
-                jobOffer.salary,
+                jobOffer.salary.toString() + " " + jobOffer.currency,
                 style: mainStyle(
                   fontColor: context.theme.primaryColor,
                   fontSize: 24,
@@ -203,11 +207,49 @@ class JobOfferViewModel extends StatelessWidget {
                 ? Padding(
                     padding: EdgeInsets.all(8),
                     child: Center(
-                      child: Text(
-                        "this offer was poster by you",
-                        style: mainStyle(),
-                      ),
-                    ),
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "this offer was poster by you",
+                          style: mainStyle(),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    color: Colors.red, shape: BoxShape.circle),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection("offers")
+                                        .doc(jobOffer.id.toString())
+                                        .delete()
+                                        .then((value) {
+                                      jobsController.offers.remove(jobOffer);
+                                      jobsController.filteredList
+                                          .remove(jobOffer);
+                                      Get.back();
+                                      jobsController.update();
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
                   )
                 : Center(
                     child: Row(

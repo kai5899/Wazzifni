@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Controllers/AuthController.dart';
@@ -11,7 +12,7 @@ import 'package:locateme/Models/UserModel.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class FirstTimeController extends GetxController {
-  Rx<Position> currentPosition = Rx<Position>(null);
+  Rx<LatLng> currentPosition = Rx<LatLng>(null);
   Rx<DateTime> selectedDate = Rx<DateTime>(null);
 
   RxnString userType = RxnString();
@@ -107,8 +108,8 @@ class FirstTimeController extends GetxController {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     //
-
-    currentPosition.value = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
+    currentPosition.value = LatLng(position.latitude, position.longitude);
     print(currentPosition.value);
     // setState(() {});
   }
@@ -136,9 +137,9 @@ class FirstTimeController extends GetxController {
           uid: user.uid,
           photoUrl: photoUrl.value == null ? "none" : photoUrl.value,
           type: "Regular User");
-     
+
       _authController.firestoreService.createRegularUser(userz);
- _authController.saveRegUserLocally(userz);
+      _authController.saveRegUserLocally(userz);
       _authController.localUser.value = userz.toJson();
     } else {
       ServiceProvider userz = ServiceProvider(

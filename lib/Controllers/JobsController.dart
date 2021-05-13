@@ -9,6 +9,7 @@ import 'package:locateme/Services/FirestoreServices.dart';
 class JobsController extends GetxController {
   TextEditingController titleController = TextEditingController();
   TextEditingController salaryController = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController reqController = TextEditingController();
 
@@ -17,6 +18,7 @@ class JobsController extends GetxController {
   RxList<dynamic> jobRequirementss = RxList<dynamic>([]);
 
   RxList<JobOffer> offers = RxList([]);
+  RxList<JobOffer> filteredList = RxList<JobOffer>([]);
 
   FirestoreService _service = FirestoreService();
 
@@ -50,6 +52,22 @@ class JobsController extends GetxController {
     selectedType.value = value;
   }
 
+  filter() {
+    print(offers.length);
+    filteredList = RxList(offers
+        .where(
+            (e) => e.jobType.toLowerCase() == selectedType.value.toLowerCase())
+        .toList());
+    update();
+  }
+
+  resetFilter() {
+    selectedType.value = null;
+    // markers.clear();
+    filteredList = offers;
+    update();
+  }
+
   void addOffer(String posterID, Position position) {
     JobOffer newOffer = JobOffer(
       id: DateTime.now().millisecondsSinceEpoch,
@@ -59,16 +77,20 @@ class JobsController extends GetxController {
       jobType: selectedType.value,
       latitude: position.latitude,
       longitude: position.longitude,
-      salary: salaryController.text,
+      salary: double.parse(salaryController.text),
       posterId: posterID,
+      currency: currencyController.text,
       location: positionString.value,
     );
 
     offers.add(newOffer);
+    // filteredList.add(newOffer);
+    // offers.sort()
     print("the offer " + offers.last.requirements.toString());
     _service.postOffer(newOffer);
     time.value = DateTime.now();
     clearAddOffer();
+    update();
   }
 
   clearAddOffer() {
@@ -80,6 +102,17 @@ class JobsController extends GetxController {
     // jobRequirementss.clear();
   }
 
+  filterBylocation(text) {
+    // markers.clear();
+    filteredList = RxList(offers
+        .where((e) =>
+            e.location.toLowerCase().contains(text.toString().toLowerCase()) ||
+            e.jobTitle.toLowerCase().contains(text.toString().toLowerCase()))
+        .toList());
+
+    update();
+  }
+
   getOffers() async {
     offers.clear();
     time.value = DateTime.now();
@@ -87,6 +120,9 @@ class JobsController extends GetxController {
     docs.forEach((element) {
       offers.add(JobOffer.fromMap(element.data()));
     });
+
+    filteredList = offers;
+    update();
   }
 
   Future<String> printLocationName(Position position) async {
