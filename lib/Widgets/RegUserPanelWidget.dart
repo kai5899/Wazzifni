@@ -99,11 +99,14 @@ class RegUserPanelWidget extends StatelessWidget {
                                   controller.selectedProvider.value.photoUrl ==
                                           "none"
                                       ? Center(
-                                          child: Text(controller
-                                              .selectedProvider
-                                              .value
-                                              .fullName[0]
-                                              .toLowerCase()),
+                                          child: Text(
+                                            controller.selectedProvider.value
+                                                .fullName[0]
+                                                .toLowerCase(),
+                                            style: mainStyle(
+                                                fontColor: mainColor,
+                                                fontSize: Get.height * 0.20),
+                                          ),
                                         )
                                       : null,
                             ),

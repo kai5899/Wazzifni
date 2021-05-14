@@ -205,7 +205,7 @@ class JobOfferViewModel extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "contaict via Whatsapp",
+                    "contact via Whatsapp",
                     style: mainStyle(),
                   ),
                   Container(
@@ -223,6 +223,52 @@ class JobOfferViewModel extends StatelessWidget {
                             "whatsapp://send?phone=${user["phoneNumber"]}";
                         try {
                           launch(whatsappUrl);
+                          // throw ("error");
+                        } catch (error) {
+                          Get.snackbar(
+                            "Error Occured",
+                            error.toString(),
+                            snackPosition: SnackPosition.TOP,
+                            duration: Duration(seconds: 3),
+                            overlayColor: Colors.white.withOpacity(0.8),
+                            overlayBlur: 1,
+                            // borderRadius: 36,
+                            forwardAnimationCurve: Curves.easeInOutBack,
+                            reverseAnimationCurve: Curves.easeInCubic,
+                            icon: Icon(
+                              Icons.warning,
+                              color: sColor3,
+                            ),
+                            shouldIconPulse: true,
+                            snackStyle: SnackStyle.FLOATING,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "call directly",
+                    style: mainStyle(),
+                  ),
+                  Container(
+                    child: IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.phone,
+                        size: 36,
+                        color: sColor3,
+                      ),
+                      onPressed: () async {
+                        Map<String, dynamic> user = await FirestoreService()
+                            .getUserById(jobOffer.posterId);
+                        try {
+                          launch("tel://${user["phoneNumber"]}");
                           // throw ("error");
                         } catch (error) {
                           Get.snackbar(
