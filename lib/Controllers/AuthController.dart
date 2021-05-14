@@ -139,6 +139,7 @@ class AuthController extends GetxController {
         // otpDialogBox(context).then((value) {});
       },
       codeAutoRetrievalTimeout: (String verId) {
+        print("we are here in the timeout");
         verificationId.value = verId;
         phoneAuthStatus.value = "TIMEOUT";
       },

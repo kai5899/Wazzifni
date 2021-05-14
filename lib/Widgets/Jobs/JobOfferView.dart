@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,13 +11,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 class JobOfferViewModel extends StatelessWidget {
   final JobOffer jobOffer;
-  final bool byYou;
   final int index;
 
   final ScrollController sc = ScrollController();
   final JobsController jobsController = Get.put(JobsController());
 
-  JobOfferViewModel({this.jobOffer, this.byYou, this.index});
+  JobOfferViewModel({this.jobOffer, this.index});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,7 +169,6 @@ class JobOfferViewModel extends StatelessWidget {
                 ),
               ),
             ),
-            // Text(jobOffer.jobRequirements.toString()),
             ListView.builder(
               controller: sc,
               shrinkWrap: true,
@@ -203,104 +200,56 @@ class JobOfferViewModel extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            byYou
-                ? Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Center(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "this offer was poster by you",
-                          style: mainStyle(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    color: Colors.red, shape: BoxShape.circle),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("offers")
-                                        .doc(jobOffer.id.toString())
-                                        .delete()
-                                        .then((value) {
-                                      jobsController.offers.remove(jobOffer);
-                                      jobsController.filteredList
-                                          .remove(jobOffer);
-                                      Get.back();
-                                      jobsController.update();
-                                    });
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    )),
-                  )
-                : Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "contaict via Whatsapp",
-                          style: mainStyle(),
-                        ),
-                        Container(
-                          child: IconButton(
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "contaict via Whatsapp",
+                    style: mainStyle(),
+                  ),
+                  Container(
+                    child: IconButton(
+                      icon: Icon(
+                        FontAwesomeIcons.whatsapp,
+                        size: 36,
+                        color: Color(0xff075e54),
+                      ),
+                      onPressed: () async {
+                        // String posterNumber  =
+                        Map<String, dynamic> user = await FirestoreService()
+                            .getUserById(jobOffer.posterId);
+                        var whatsappUrl =
+                            "whatsapp://send?phone=${user["phoneNumber"]}";
+                        try {
+                          launch(whatsappUrl);
+                          // throw ("error");
+                        } catch (error) {
+                          Get.snackbar(
+                            "Error Occured",
+                            error.toString(),
+                            snackPosition: SnackPosition.TOP,
+                            duration: Duration(seconds: 3),
+                            overlayColor: Colors.white.withOpacity(0.8),
+                            overlayBlur: 1,
+                            // borderRadius: 36,
+                            forwardAnimationCurve: Curves.easeInOutBack,
+                            reverseAnimationCurve: Curves.easeInCubic,
                             icon: Icon(
-                              FontAwesomeIcons.whatsapp,
-                              size: 36,
-                              color: Color(0xff075e54),
+                              Icons.warning,
+                              color: sColor3,
                             ),
-                            onPressed: () async {
-                              // String posterNumber  =
-                              Map<String, dynamic> user =
-                                  await FirestoreService()
-                                      .getUserById(jobOffer.posterId);
-                              var whatsappUrl =
-                                  "whatsapp://send?phone=${user["phoneNumber"]}";
-                              try {
-                                launch(whatsappUrl);
-                                // throw ("error");
-                              } catch (error) {
-                                Get.snackbar(
-                                  "Error Occured",
-                                  error.toString(),
-                                  snackPosition: SnackPosition.TOP,
-                                  duration: Duration(seconds: 3),
-                                  overlayColor: Colors.white.withOpacity(0.8),
-                                  overlayBlur: 1,
-                                  // borderRadius: 36,
-                                  forwardAnimationCurve: Curves.easeInOutBack,
-                                  reverseAnimationCurve: Curves.easeInCubic,
-                                  icon: Icon(
-                                    Icons.warning,
-                                    color: sColor3,
-                                  ),
-                                  shouldIconPulse: true,
-                                  snackStyle: SnackStyle.FLOATING,
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+                            shouldIconPulse: true,
+                            snackStyle: SnackStyle.FLOATING,
+                          );
+                        }
+                      },
                     ),
                   ),
+                ],
+              ),
+            ),
+
             SizedBox(
               height: 10,
             ),

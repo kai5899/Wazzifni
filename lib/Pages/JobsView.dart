@@ -8,6 +8,7 @@ import 'package:locateme/Controllers/AuthController.dart';
 import 'package:locateme/Controllers/JobsController.dart';
 import 'package:locateme/Widgets/Jobs/AddJobView.dart';
 import 'package:locateme/Widgets/Jobs/JobOfferView.dart';
+import 'package:locateme/Widgets/Jobs/JobOfferViewByYou.dart';
 
 class JobsView extends StatelessWidget {
   JobsView();
@@ -176,12 +177,18 @@ class JobsView extends StatelessWidget {
                           transitionDuration: Duration(milliseconds: 400),
                           transitionType: ContainerTransitionType.fadeThrough,
                           openBuilder: (BuildContext context, VoidCallback _) {
-                            return JobOfferViewModel(
-                              jobOffer: jobsController.filteredList[index],
-                              byYou: _authController.user.uid ==
-                                  jobsController.filteredList[index].posterId,
-                              index: index,
-                            );
+                            return _authController.user.uid ==
+                                    jobsController.filteredList[index].posterId
+                                ? JobOfferViewByYouModel(
+                                    jobOffer:
+                                        jobsController.filteredList[index],
+                                    index: index,
+                                  )
+                                : JobOfferViewModel(
+                                    jobOffer:
+                                        jobsController.filteredList[index],
+                                    index: index,
+                                  );
                           },
                           closedElevation: 0,
                           closedShape: const RoundedRectangleBorder(

@@ -101,6 +101,12 @@ class PhonePageTwo extends StatelessWidget {
                 },
               )),
           SizedBox(height: Get.height * 0.05),
+          GetBuilder(
+            init: AuthController(),
+            builder: (controller) => Center(
+              child: Text(controller.phoneAuthStatus.value),
+            ),
+          ),
           Center(
             child: InkWell(
               child: Container(
@@ -120,9 +126,14 @@ class PhonePageTwo extends StatelessWidget {
               ),
               onTap: () {
                 // authController.signIn(currentText).then((value) {
-                authController.signIn(currentText).then((value) {
+                if (authController.phoneAuthStatus.value ==
+                    "Your account is successfully verified") {
                   onPressed();
-                });
+                } else {
+                  authController.signIn(currentText).then((value) {
+                    onPressed();
+                  });
+                }
 
                 // });
               },
