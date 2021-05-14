@@ -13,7 +13,7 @@ class JobsController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController reqController = TextEditingController();
 
-  RxnString selectedType = RxnString();
+  RxnString selectedType = RxnString("Full Time");
 
   RxList<dynamic> jobRequirementss = RxList<dynamic>([]);
 
@@ -22,7 +22,7 @@ class JobsController extends GetxController {
 
   FirestoreService _service = FirestoreService();
 
-  RxString positionString = RxString("");
+  RxString positionString = RxString("Full Time");
 
   List<String> jobTypes = [
     "Full Time",

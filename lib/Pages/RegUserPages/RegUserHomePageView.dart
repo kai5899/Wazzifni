@@ -32,72 +32,75 @@ class RegularUserHomeView extends StatelessWidget {
                 SizedBox(
                   height: Get.height * 0.01,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 32, right: 32),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Filter :".tr,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 32, right: 32),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Filter :".tr,
+                              style: mainStyle(
+                                  fontSize: 24,
+                                  fontColor: context.theme.primaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 32),
+                        child: DropdownButton<String>(
+                          hint: Text(
+                            "Select item".tr,
                             style: mainStyle(
                                 fontSize: 24,
                                 fontColor: context.theme.primaryColor,
                                 fontWeight: FontWeight.w500),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 32),
-                      child: DropdownButton<String>(
-                        hint: Text(
-                          "Select item".tr,
-                          style: mainStyle(
-                              fontSize: 24,
-                              fontColor: context.theme.primaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        value: userController.userType.value,
-                        onChanged: (String value) {
-                          userController.changeType(value);
-                          userController.filter();
-                        },
-                        items: profesions.map((String user) {
-                          return DropdownMenuItem<String>(
-                            value: user,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      image: Image.asset(
-                                              "assets/icons/${user.toLowerCase()}.png")
-                                          .image,
+                          value: userController.userType.value,
+                          onChanged: (String value) {
+                            userController.changeType(value);
+                            userController.filter();
+                          },
+                          items: profesions.map((String user) {
+                            return DropdownMenuItem<String>(
+                              value: user,
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                        image: Image.asset(
+                                                "assets/icons/${user.toLowerCase()}.png")
+                                            .image,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  user,
-                                  style: mainStyle(
-                                      fontSize: 24,
-                                      fontColor: context.theme.primaryColor,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    user,
+                                    style: mainStyle(
+                                        fontSize: 24,
+                                        fontColor: context.theme.primaryColor,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(32, 8, 32, 8),
@@ -149,6 +152,7 @@ class RegularUserHomeView extends StatelessWidget {
                         "Service Provider".tr,
                     style: mainStyle(
                       fontSize: 24,
+                      fontColor: context.theme.primaryColor,
                     ),
                   ),
                 ),
@@ -228,7 +232,7 @@ class RegularUserHomeView extends StatelessWidget {
                             ),
                           )
                         : Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: ListView.builder(
                               physics: BouncingScrollPhysics(),
                               itemCount: userController.filteredList.length,
@@ -236,7 +240,7 @@ class RegularUserHomeView extends StatelessWidget {
                                 ServiceProvider serviceProvider =
                                     userController.filteredList[index];
                                 return Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       userController.selectedProvider.value =
@@ -411,24 +415,6 @@ class RegularUserHomeView extends StatelessWidget {
                 ),
               ],
             ),
-            // AnimatedPositioned(
-            //   child: CircleAvatar(
-            //     radius: 30,
-            //     backgroundColor: sColor3,
-            //     child: Center(
-            //       child: Text(
-            //         "${userController.markers.length}",
-            //         style: mainStyle(
-            //           fontColor: mainColor,
-            //           fontSize: 36,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            //   duration: Duration(milliseconds: 10),
-            //   bottom: userController.fabHeight.value,
-            //   right: 10,
-            // )
           ],
         ),
         color: Colors.transparent,

@@ -15,7 +15,7 @@ class FirstTimeController extends GetxController {
   Rx<LatLng> currentPosition = Rx<LatLng>(null);
   Rx<DateTime> selectedDate = Rx<DateTime>(null);
 
-  RxnString userType = RxnString();
+  RxnString userType = RxnString("Regular User");
   RxnString profession = RxnString();
 
   Rx<SfRangeValues> values = Rx<SfRangeValues>(SfRangeValues(40.0, 80.0));

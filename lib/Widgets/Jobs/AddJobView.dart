@@ -85,42 +85,57 @@ class AddJobView extends StatelessWidget {
                 }
               },
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: Get.width * 0.25,
-                right: Get.width * 0.25,
-                top: 10,
-                bottom: 10,
-              ),
-              child: DropdownButton<String>(
-                hint: Text(
-                  "Select item",
-                  style: mainStyle(
-                      fontSize: 24,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    "Job Type",
+                    style: mainStyle(
                       fontColor: context.theme.primaryColor,
-                      fontWeight: FontWeight.w500),
-                ),
-                value: jobsController.selectedType.value,
-                onChanged: (String value) {
-                  jobsController.changeType(value);
-                },
-                items: jobsController.jobTypes.map((String user) {
-                  return DropdownMenuItem<String>(
-                    value: user,
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          user,
-                          style: mainStyle(
-                              fontSize: 24,
-                              fontColor: context.theme.primaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
+                      fontSize: 18,
                     ),
-                  );
-                }).toList(),
-              ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: Get.width * 0.25,
+                    right: Get.width * 0.25,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: DropdownButton<String>(
+                    hint: Text(
+                      "Select item",
+                      style: mainStyle(
+                          fontSize: 24,
+                          fontColor: context.theme.primaryColor,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    value: jobsController.selectedType.value,
+                    onChanged: (String value) {
+                      jobsController.changeType(value);
+                    },
+                    items: jobsController.jobTypes.map((String user) {
+                      return DropdownMenuItem<String>(
+                        value: user,
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              user,
+                              style: mainStyle(
+                                  fontSize: 24,
+                                  fontColor: context.theme.primaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
             FieldEdited(
               maxLine: 5,
@@ -261,5 +276,3 @@ class AddJobView extends StatelessWidget {
     );
   }
 }
-
-
