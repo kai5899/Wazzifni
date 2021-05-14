@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Models/ServiceProvider.dart';
 import 'package:locateme/Models/UserModel.dart';
 import 'package:locateme/Services/FirestoreServices.dart';
@@ -72,6 +73,15 @@ class AuthController extends GetxController {
     storage.write("currentUser", localUser);
     update();
     firestoreService.updateUser(_firebaseUser.value.uid, {"photoUrl": newUrl});
+  }
+
+  updateUserLocation(LatLng latLng) {
+    localUser["latitude"] = latLng.latitude.toString();
+    localUser["longitude"] = latLng.longitude.toString();
+
+    storage.write("currentUser", localUser);
+    update();
+    firestoreService.updateUser(_firebaseUser.value.uid, {"latitude": latLng.latitude.toString(),"longitude":latLng.longitude.toString()});
   }
 
   saveProviderLocally(ServiceProvider provider) {

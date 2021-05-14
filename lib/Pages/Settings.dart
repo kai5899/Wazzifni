@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:locateme/Configuration/Pallette.dart';
 import 'package:locateme/Controllers/AppController.dart';
@@ -9,6 +13,7 @@ import 'package:locateme/Controllers/AuthController.dart';
 import 'package:locateme/Services/LocalizationServices.dart';
 import 'package:locateme/Services/ThemServices.dart';
 import 'package:locateme/Controllers/SettingsController.dart';
+import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SettingsView extends StatelessWidget {
@@ -27,9 +32,77 @@ class SettingsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: Get.height * 0.05),
+              // SizedBox(height: Get.height * 0.03),
 
               //language
+              Center(
+                child: Text(
+                  "saved position".tr,
+                  style: mainStyle(
+                    fontColor: context.theme.primaryColor,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  "click to update".tr,
+                  style: mainStyle(
+                    fontColor: context.theme.primaryColor,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  print("saved position");
+                  Get.to(() => LocationPickPageEdit());
+                },
+                child: AbsorbPointer(
+                  child: Center(
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      width: Get.width * 0.8,
+                      height: Get.height * 0.25,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(36),
+                        color: mainColor,
+                      ),
+                      child: GoogleMap(
+                        myLocationButtonEnabled: false,
+                        myLocationEnabled: true,
+                        zoomControlsEnabled: false,
+                        mapToolbarEnabled: false,
+                        markers: {
+                          Marker(
+                            markerId: MarkerId("user position"),
+                            position: LatLng(
+                              double.parse(
+                                  _authController.localUser["latitude"]),
+                              double.parse(
+                                  _authController.localUser["longitude"]),
+                            ),
+                          ),
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(
+                            double.parse(_authController.localUser["latitude"]),
+                            double.parse(
+                                _authController.localUser["longitude"]),
+                          ),
+                          zoom: 13.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
@@ -415,5 +488,117 @@ class SettingsView extends StatelessWidget {
 
   String isDarkModeOn() {
     return ThemeService().isDarkMode() ? "On" : "Off";
+  }
+}
+
+class LocationPickPageEdit extends StatefulWidget {
+  @override
+  _LocationPickPageEditState createState() => _LocationPickPageEditState();
+}
+
+class _LocationPickPageEditState extends State<LocationPickPageEdit> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  MapPickerController mapPickerController = MapPickerController();
+  final AuthController _authController = Get.put(AuthController());
+  CameraPosition cameraPosition = CameraPosition(
+    target: LatLng(31.2060916, 29.9187),
+    zoom: 14.4746,
+  );
+
+  Address address;
+
+  var textController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    cameraPosition = CameraPosition(
+      target: LatLng(
+        double.parse(_authController.localUser["latitude"]),
+        double.parse(_authController.localUser["longitude"]),
+      ),
+      zoom: 14.4746,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: MapPicker(
+              // pass icon widget
+              iconWidget: Icon(
+                Icons.location_pin,
+                size: 50,
+              ),
+              //add map picker controller
+              mapPickerController: mapPickerController,
+              child: GoogleMap(
+                zoomControlsEnabled: false,
+                // hide location button
+                myLocationButtonEnabled: false,
+                mapType: MapType.normal,
+                //  camera position
+                initialCameraPosition: cameraPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onCameraMoveStarted: () {
+                  // notify map is moving
+                  mapPickerController.mapMoving();
+                },
+                onCameraMove: (cameraPosition) {
+                  this.cameraPosition = cameraPosition;
+                },
+                onCameraIdle: () async {
+                  // notify map stopped moving
+                  mapPickerController.mapFinishedMoving();
+                  //get address name from camera position
+                  List<Address> addresses = await Geocoder.local
+                      .findAddressesFromCoordinates(Coordinates(
+                          cameraPosition.target.latitude,
+                          cameraPosition.target.longitude));
+                  // update the ui with the address
+                  textController.text = '${addresses.first?.addressLine ?? ''}';
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("hhello");
+          _authController.updateUserLocation(cameraPosition.target);
+          // firstTimeController.currentPosition.value = cameraPosition.target;
+          // firstTimeController.update();
+          Get.back();
+        },
+        child: Icon(Icons.location_city),
+      ),
+      bottomNavigationBar: GestureDetector(
+        child: BottomAppBar(
+          color: Colors.transparent,
+          elevation: 0,
+          child: GestureDetector(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              color: Colors.blue,
+              child: TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero, border: InputBorder.none),
+                controller: textController,
+                style: TextStyle(fontSize: 12, color: Colors.white),
+              ),
+              // icon: Icon(Icons.directions_boat),
+            ),
+          ),
+        ),
+        onTap: () {},
+      ),
+    );
   }
 }
