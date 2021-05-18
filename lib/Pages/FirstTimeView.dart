@@ -325,7 +325,7 @@ class FirstTimeView extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              "Price : ${(_kTimeController.values.value.start * 1000).toStringAsFixed(0)} : ${(_kTimeController.values.value.end * 1000).toStringAsFixed(0)}",
+                              "fees : ${(_kTimeController.values.value.start * 1000).toStringAsFixed(0)} : ${(_kTimeController.values.value.end * 1000).toStringAsFixed(0)}",
                               style: mainStyle(
                                   fontSize: 24,
                                   fontColor: mainColor,

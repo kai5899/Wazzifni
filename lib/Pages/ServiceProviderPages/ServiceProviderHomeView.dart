@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:locateme/Configuration/FontStyles.dart';
 import 'package:get/get.dart';
 import 'package:locateme/Controllers/AppController.dart';
-import 'package:locateme/Widgets/CustomDrawerWidget.dart';
+import 'package:locateme/Controllers/AuthController.dart';
 
 class ServiceProviderHomeView extends StatelessWidget {
   ServiceProviderHomeView();
   final AppController controller = Get.put(AppController());
+
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,44 +19,22 @@ class ServiceProviderHomeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "click on".tr,
+              "am i available ? ".tr,
               style: mainStyle(
-                fontSize: 48,
                 fontColor: context.theme.primaryColor,
+                fontSize: 48,
               ),
             ),
-            // IconButton(
-            //   onPressed: () {
-            //     controller.handleMenuButtonPressed();
-            //   },
-            //   icon: ,
-            // ),
-            GestureDetector(
-              child: ValueListenableBuilder<AdvancedDrawerValue>(
-                valueListenable: controller.drawerController,
-                builder: (context, value, child) {
-                  return AnimatedIcon(
-                      icon: AnimatedIcons.menu_close,
-                      progress: controller.controller,
-                      semanticLabel: 'Show menu',
-                      color: context.theme.primaryColor,
-                      size: Get.height * 0.3);
-                  // Icon(
-                  //   value.visible ? Icons.clear : Icons.menu,
-                  //   color: mainColor,
-                  //   size: 36,
-                  // );
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 100,
+              child: FlutterSwitch(
+                value: authController.localUser["available"],
+                onToggle: (val) {
+                  authController.updateAvailable(val);
                 },
-              ),
-              onTap: () {
-                controller.handleMenuButtonPressed();
-              },
-            ),
-            Text(
-              "to navigate".tr,
-              style: mainStyle(
-                fontSize: 48,
-                fontColor: context.theme.primaryColor,
               ),
             ),
           ],

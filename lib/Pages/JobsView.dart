@@ -151,6 +151,48 @@ class JobsView extends StatelessWidget {
                 padding:
                     EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
               ),
+              Padding(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: mainColor,
+                  ),
+                  height: 65,
+                  child: Padding(
+                    child: TextFormField(
+                      onChanged: (text) {
+                        jobsController.filterBySalary(text);
+                      },
+                      cursorColor: Colors.white,
+                      style: mainStyle(
+                        fontColor: context.theme.accentColor,
+                        fontSize: 24,
+                      ),
+                      decoration: InputDecoration(
+                        icon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FaIcon(
+                            FontAwesomeIcons.search,
+                            color: context.theme.accentColor,
+                            size: 36,
+                          ),
+                        ),
+                        labelText: "Enter minimum salary",
+                        labelStyle: mainStyle(
+                          fontColor: context.theme.accentColor,
+                          fontSize: 20,
+                        ),
+                        fillColor: Colors.white,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                    ),
+                    padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                  ),
+                ),
+                padding:
+                    EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
+              ),
               Center(
                 child: Text(
                   "Found ".tr +

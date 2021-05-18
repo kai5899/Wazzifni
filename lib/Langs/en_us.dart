@@ -53,7 +53,7 @@ const Map<String, String> enUS = {
   "Refresh": "Refresh",
   "Reset Filter": "Reset Filter",
   "Service Provider Bio": "Service Provider Bio",
-  "Price Range": "Price Range",
+  "Price Range": "fees",
   "Reviews": "Reviews",
   "Add a Review": "Add a Review",
   "Write a Review": "Write a Review",

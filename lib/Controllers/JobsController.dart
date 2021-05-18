@@ -113,6 +113,20 @@ class JobsController extends GetxController {
     update();
   }
 
+  filterBySalary(text) {
+    // markers.clear();
+    filteredList = RxList(offers
+        .where((e) =>
+            e.salary
+                .toString()
+                .toLowerCase()
+                .contains(text.toString().toLowerCase()) ||
+            e.salary >= double.tryParse(text))
+        .toList());
+
+    update();
+  }
+
   getOffers() async {
     offers.clear();
     time.value = DateTime.now();
